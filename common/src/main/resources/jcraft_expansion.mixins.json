@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.jcraftexpansion.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "StandEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
