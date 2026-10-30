@@ -3,6 +3,9 @@ package com.jcraftexpansion;
 import com.jcraftexpansion.common.barrage.BarrageHoldHandler;
 import com.jcraftexpansion.common.register.EntityTypeRegistry;
 import com.jcraftexpansion.common.register.StandTypeRegistry;
+import com.jcraftexpansion.common.skill.SkillNetworking;
+import com.jcraftexpansion.common.skill.SkillTicker;
+import com.jcraftexpansion.common.standstate.StandFlags;
 import net.minecraft.resources.ResourceLocation;
 
 public final class JCraftExpansion {
@@ -16,6 +19,11 @@ public final class JCraftExpansion {
         EntityTypeRegistry.registerAttributes();
 
         BarrageHoldHandler.init();
+
+        SkillNetworking.init();
+        SkillTicker.init();
+
+        StandFlags.init();
     }
 
     public static ResourceLocation id(String path) {

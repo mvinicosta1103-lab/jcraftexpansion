@@ -1,3 +1,27 @@
 {
-  "entity.jcraft_expansion.diver_down": "Diver Down"
+  "key.jcraft_expansion.skill_toggle": "Toggle extra skill hotbar",
+  "key.categories.jcraft_expansion": "JCraft Expansion",
+  "hud.jcraft_expansion.skills_active": "Extra skills active (keys 1-9)",
+  "hud.jcraft_expansion.skills_hint": "[%s] Extra skills",
+  "skill.jcraft_expansion.life_swarm": "Life Swarm",
+  "skill.jcraft_expansion.life_transplant": "Life Transplant",
+  "skill.jcraft_expansion.living_sapling": "Living Sapling",
+  "skill.jcraft_expansion.block_reanimate": "Reanimate Block",
+  "skill.jcraft_expansion.living_bark": "Living Bark",
+  "skill.jcraft_expansion.vital_pulse": "Vital Pulse",
+  "skill.jcraft_expansion.pain_overload": "Pain Overload",
+  "skill.jcraft_expansion.guided_viper": "Guided Viper",
+  "skill.jcraft_expansion.healing_flower": "Healing Flower",
+  "skill.jcraft_expansion.msg.cooldown": "Skill on cooldown: %s s",
+  "skill.jcraft_expansion.msg.need_item": "Hold an item in your hand.",
+  "skill.jcraft_expansion.msg.need_stackable": "Hold a stackable item.",
+  "skill.jcraft_expansion.msg.no_target": "No target in sight.",
+  "skill.jcraft_expansion.msg.no_soil": "No suitable soil here.",
+  "skill.jcraft_expansion.msg.no_space": "Not enough room for the tree to grow.",
+  "skill.jcraft_expansion.msg.nothing_changed": "No nearby block can be reanimated.",
+  "skill.jcraft_expansion.msg.griefing_off": "You can't alter blocks here.",
+  "key.jcraft_expansion.stand_off": "Stand Off mode (arms only)",
+  "key.jcraft_expansion.kick_barrage": "Kick barrage (hold)",
+  "standflags.jcraft_expansion.stand_off_on": "Stand Off on: only the arms are visible",
+  "standflags.jcraft_expansion.stand_off_off": "Stand Off off"
 }
