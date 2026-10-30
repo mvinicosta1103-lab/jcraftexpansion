@@ -51,18 +51,8 @@ public final class BarrageHoldHandler {
                     cooldowns.clear(CooldownType.STAND_BARRAGE);
                 }
 
-                if (stand.getCurrentMove() instanceof AbstractBarrageAttack<?, ?> barrage) {
-                    int moveStun = stand.getMoveStun();
-                    int interval = Math.max(1, barrage.getInterval());
-                    int span = barrage.getDuration() - barrage.getWindup();
-
-                    // Perto do fim: "rebobina" o moveStun por um múltiplo exato do intervalo entre golpes,
-                    // mantendo o ritmo dos golpes e impedindo a barragem de terminar.
-                    if (moveStun > 0 && moveStun <= interval && span > interval) {
-                        int loopLength = interval * Math.max(1, (span - interval) / interval);
-                        stand.setMoveStun(moveStun + loopLength);
-                        LOOPING.add(player.getUUID());
-                    }
+                if (stand.getCurrentMove() instanceof AbstractBarrageAttack<?, ?> barrage && extend(stand, barrage)) {
+                    LOOPING.add(player.getUUID());
                 }
             } else if (LOOPING.remove(player.getUUID())) {
                 // Soltou a tecla: encerra a barragem que estávamos mantendo.
@@ -71,5 +61,23 @@ public final class BarrageHoldHandler {
                 }
             }
         }
+    }
+
+    /**
+     * Perto do fim da barragem, "rebobina" o moveStun por um múltiplo exato do intervalo entre golpes,
+     * mantendo o ritmo dos golpes e impedindo a barragem de terminar.
+     *
+     * @return true se rebobinou neste tick.
+     */
+    public static boolean extend(StandEntity<?, ?> stand, AbstractBarrageAttack<?, ?> barrage) {
+        int moveStun = stand.getMoveStun();
+        int interval = Math.max(1, barrage.getInterval());
+        int span = barrage.getDuration() - barrage.getWindup();
+        if (moveStun > 0 && moveStun <= interval && span > interval) {
+            int loopLength = interval * Math.max(1, (span - interval) / interval);
+            stand.setMoveStun(moveStun + loopLength);
+            return true;
+        }
+        return false;
     }
 }

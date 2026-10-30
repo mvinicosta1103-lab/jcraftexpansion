@@ -23,5 +23,11 @@
   "key.jcraft_expansion.stand_off": "Modo Stand Off (só os braços)",
   "key.jcraft_expansion.kick_barrage": "Barragem de chutes (segurar)",
   "standflags.jcraft_expansion.stand_off_on": "Stand Off ligado: só os braços aparecem",
-  "standflags.jcraft_expansion.stand_off_off": "Stand Off desligado"
+  "standflags.jcraft_expansion.stand_off_off": "Stand Off desligado",
+  "key.jcraft_expansion.tandem": "Tandem (stand ataca sozinho)",
+  "tandem.jcraft_expansion.on": "Tandem ligado: o stand ataca o alvo",
+  "tandem.jcraft_expansion.off": "Tandem desligado",
+  "tandem.jcraft_expansion.no_target": "Olhe para uma entidade para usar o Tandem",
+  "tandem.jcraft_expansion.target_lost": "Tandem encerrado: alvo perdido",
+  "tandem.jcraft_expansion.busy": "O stand já está sendo pilotado"
 }

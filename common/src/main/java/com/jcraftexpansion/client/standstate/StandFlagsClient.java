@@ -1,6 +1,7 @@
 package com.jcraftexpansion.client.standstate;
 
 import com.jcraftexpansion.common.standstate.StandFlags;
+import com.jcraftexpansion.common.standstate.TandemManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.networking.NetworkManager;
@@ -22,6 +23,9 @@ public final class StandFlagsClient {
     private static final KeyMapping KICK_KEY = new KeyMapping("key.jcraft_expansion.kick_barrage",
             InputConstants.Type.KEYSYM, 74 /* J */, CATEGORY);
 
+    private static final KeyMapping TANDEM_KEY = new KeyMapping("key.jcraft_expansion.tandem",
+            InputConstants.Type.KEYSYM, 89 /* Y */, CATEGORY);
+
     private static boolean kickSent = false;
 
     private StandFlagsClient() {
@@ -30,13 +34,15 @@ public final class StandFlagsClient {
     public static void init() {
         KeyMappingRegistry.register(STAND_OFF_KEY);
         KeyMappingRegistry.register(KICK_KEY);
+        KeyMappingRegistry.register(TANDEM_KEY);
         ClientTickEvent.CLIENT_PRE.register(StandFlagsClient::tick);
 
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, StandFlags.SYNC_ID, (buf, context) -> {
             UUID player = buf.readUUID();
             boolean off = buf.readBoolean();
             boolean kick = buf.readBoolean();
-            context.queue(() -> StandFlags.applyClient(player, off, kick));
+            boolean tandem = buf.readBoolean();
+            context.queue(() -> StandFlags.applyClient(player, off, kick, tandem));
         });
     }
 
@@ -50,6 +56,12 @@ public final class StandFlagsClient {
         while (STAND_OFF_KEY.consumeClick()) {
             if (stand != null && mc.screen == null) {
                 NetworkManager.sendToServer(StandFlags.TOGGLE_OFF_ID, new FriendlyByteBuf(Unpooled.buffer()));
+            }
+        }
+
+        while (TANDEM_KEY.consumeClick()) {
+            if (stand != null && mc.screen == null) {
+                NetworkManager.sendToServer(TandemManager.TOGGLE_ID, new FriendlyByteBuf(Unpooled.buffer()));
             }
         }
 

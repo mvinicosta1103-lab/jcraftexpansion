@@ -23,5 +23,11 @@
   "key.jcraft_expansion.stand_off": "Stand Off mode (arms only)",
   "key.jcraft_expansion.kick_barrage": "Kick barrage (hold)",
   "standflags.jcraft_expansion.stand_off_on": "Stand Off on: only the arms are visible",
-  "standflags.jcraft_expansion.stand_off_off": "Stand Off off"
+  "standflags.jcraft_expansion.stand_off_off": "Stand Off off",
+  "key.jcraft_expansion.tandem": "Tandem (stand attacks on its own)",
+  "tandem.jcraft_expansion.on": "Tandem on: your stand attacks the target",
+  "tandem.jcraft_expansion.off": "Tandem off",
+  "tandem.jcraft_expansion.no_target": "Look at an entity to use Tandem",
+  "tandem.jcraft_expansion.target_lost": "Tandem ended: target lost",
+  "tandem.jcraft_expansion.busy": "The stand is already being piloted"
 }

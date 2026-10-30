@@ -37,6 +37,7 @@ public final class StandFlags {
 
     private static final Set<UUID> STAND_OFF = ConcurrentHashMap.newKeySet();
     private static final Set<UUID> KICKING = ConcurrentHashMap.newKeySet();
+    private static final Set<UUID> TANDEM = ConcurrentHashMap.newKeySet();
 
     private StandFlags() {
     }
@@ -53,10 +54,22 @@ public final class StandFlags {
         return user != null && KICKING.contains(user.getUUID());
     }
 
+    public static boolean isTandem(StandEntity<?, ?> stand) {
+        LivingEntity user = stand.getUser();
+        return user != null && TANDEM.contains(user.getUUID());
+    }
+
     /** Usado pelo cliente ao receber o pacote de sincronização. */
-    public static void applyClient(UUID player, boolean off, boolean kick) {
+    public static void applyClient(UUID player, boolean off, boolean kick, boolean tandem) {
         setIn(STAND_OFF, player, off);
         setIn(KICKING, player, kick);
+        setIn(TANDEM, player, tandem);
+    }
+
+    /** Liga/desliga o estado de Tandem de um jogador e avisa todos os clientes (usado pelo TandemManager). */
+    public static void setTandemFlag(ServerPlayer player, boolean on) {
+        setIn(TANDEM, player.getUUID(), on);
+        broadcast(player);
     }
 
     private static void setIn(Set<UUID> set, UUID id, boolean value) {
@@ -91,7 +104,7 @@ public final class StandFlags {
                 return;
             }
             for (ServerPlayer p : server.getPlayerList().getPlayers()) {
-                if (STAND_OFF.contains(p.getUUID()) || KICKING.contains(p.getUUID())) {
+                if (STAND_OFF.contains(p.getUUID()) || KICKING.contains(p.getUUID()) || TANDEM.contains(p.getUUID())) {
                     NetworkManager.sendToPlayer(joiner, SYNC_ID, syncBuf(p.getUUID()));
                 }
             }
@@ -99,6 +112,7 @@ public final class StandFlags {
         PlayerEvent.PLAYER_QUIT.register(player -> {
             STAND_OFF.remove(player.getUUID());
             KICKING.remove(player.getUUID());
+            TANDEM.remove(player.getUUID());
             broadcast(player);
         });
     }
@@ -188,6 +202,7 @@ public final class StandFlags {
         buf.writeUUID(player);
         buf.writeBoolean(STAND_OFF.contains(player));
         buf.writeBoolean(KICKING.contains(player));
+        buf.writeBoolean(TANDEM.contains(player));
         return buf;
     }
 }

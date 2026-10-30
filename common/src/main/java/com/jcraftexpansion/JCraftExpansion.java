@@ -6,6 +6,7 @@ import com.jcraftexpansion.common.register.StandTypeRegistry;
 import com.jcraftexpansion.common.skill.SkillNetworking;
 import com.jcraftexpansion.common.skill.SkillTicker;
 import com.jcraftexpansion.common.standstate.StandFlags;
+import com.jcraftexpansion.common.standstate.TandemManager;
 import net.minecraft.resources.ResourceLocation;
 
 public final class JCraftExpansion {
@@ -24,6 +25,7 @@ public final class JCraftExpansion {
         SkillTicker.init();
 
         StandFlags.init();
+        TandemManager.init();
     }
 
     public static ResourceLocation id(String path) {
