@@ -29,5 +29,21 @@
   "tandem.jcraft_expansion.off": "Tandem desligado",
   "tandem.jcraft_expansion.no_target": "Olhe para uma entidade para usar o Tandem",
   "tandem.jcraft_expansion.target_lost": "Tandem encerrado: alvo perdido",
-  "tandem.jcraft_expansion.busy": "O stand já está sendo pilotado"
+  "tandem.jcraft_expansion.busy": "O stand já está sendo pilotado",
+  "skill.jcraft_expansion.guardian_pilot": "Piloto Guardião",
+  "skill.jcraft_expansion.stand_command": "Ordem ao Stand",
+  "skill.jcraft_expansion.recall_stand": "Chamar de Volta",
+  "skill.jcraft_expansion.memory_wipe": "Disco do Esquecimento",
+  "skill.jcraft_expansion.sleep_disc": "Disco do Sono",
+  "skill.jcraft_expansion.toxic_mist": "Névoa Tóxica",
+  "skill.jcraft_expansion.acid_trap": "Armadilha de Ácido",
+  "skill.jcraft_expansion.disc_ward": "Disco Protetor",
+  "skill.jcraft_expansion.msg.no_autopilot": "Nenhum piloto automático ativo.",
+  "autopilot.jcraft_expansion.guard_on": "Piloto Guardião ligado: o stand protege você",
+  "autopilot.jcraft_expansion.hold_on": "Stand posicionado: vigiando o ponto",
+  "autopilot.jcraft_expansion.attack_on": "Stand enviado para atacar o alvo",
+  "autopilot.jcraft_expansion.off": "Piloto automático encerrado",
+  "autopilot.jcraft_expansion.target_done": "Alvo derrotado: o stand voltou",
+  "autopilot.jcraft_expansion.too_far": "Piloto automático encerrado: stand longe demais",
+  "autopilot.jcraft_expansion.busy": "O stand está em Tandem"
 }

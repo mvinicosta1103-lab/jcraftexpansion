@@ -9,7 +9,8 @@
     "StandEntityRendererMixin"
   ],
   "mixins": [
-    "StandEntityMixin"
+    "StandEntityMixin",
+    "WhiteSnakeEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

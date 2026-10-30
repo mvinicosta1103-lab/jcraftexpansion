@@ -29,5 +29,21 @@
   "tandem.jcraft_expansion.off": "Tandem off",
   "tandem.jcraft_expansion.no_target": "Look at an entity to use Tandem",
   "tandem.jcraft_expansion.target_lost": "Tandem ended: target lost",
-  "tandem.jcraft_expansion.busy": "The stand is already being piloted"
+  "tandem.jcraft_expansion.busy": "The stand is already being piloted",
+  "skill.jcraft_expansion.guardian_pilot": "Guardian Pilot",
+  "skill.jcraft_expansion.stand_command": "Stand Command",
+  "skill.jcraft_expansion.recall_stand": "Recall Stand",
+  "skill.jcraft_expansion.memory_wipe": "Memory Wipe Disc",
+  "skill.jcraft_expansion.sleep_disc": "Sleep Disc",
+  "skill.jcraft_expansion.toxic_mist": "Toxic Mist",
+  "skill.jcraft_expansion.acid_trap": "Acid Trap",
+  "skill.jcraft_expansion.disc_ward": "Protective Disc",
+  "skill.jcraft_expansion.msg.no_autopilot": "No autopilot is active.",
+  "autopilot.jcraft_expansion.guard_on": "Guardian Pilot on: the stand protects you",
+  "autopilot.jcraft_expansion.hold_on": "Stand deployed: guarding the spot",
+  "autopilot.jcraft_expansion.attack_on": "Stand sent to attack the target",
+  "autopilot.jcraft_expansion.off": "Autopilot ended",
+  "autopilot.jcraft_expansion.target_done": "Target defeated: the stand returned",
+  "autopilot.jcraft_expansion.too_far": "Autopilot ended: stand too far away",
+  "autopilot.jcraft_expansion.busy": "The stand is in Tandem"
 }

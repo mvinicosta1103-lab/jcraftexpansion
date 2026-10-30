@@ -34,8 +34,9 @@ public abstract class StandEntityMixin {
     }
 
     /**
-     * No Tandem o stand fica no modo "remoto" do JCraft (solto do usuário), mas quem o move é a nossa IA:
-     * ele não deve copiar a rotação do usuário nem imobilizá-lo como no modo de pilotagem.
+     * No Tandem (e no Piloto Automático) o stand fica no modo "remoto" do JCraft (solto do usuário), mas quem o
+     * move é a nossa IA: ele não deve copiar a rotação do usuário nem imobilizá-lo como no modo de pilotagem.
+     * (O Piloto Automático reaproveita o mesmo flag do Tandem: "stand autônomo".)
      */
     @Inject(method = "remoteControllable", at = @At("HEAD"), cancellable = true, remap = false)
     private void jcraftexpansion$tandemIsAutonomous(CallbackInfoReturnable<Boolean> cir) {
