@@ -20,6 +20,8 @@ import java.util.WeakHashMap;
 public final class BonePoser {
     /** Ossos que escondemos em cada stand, para restaurar quando o estado acabar. */
     private static final Map<StandEntity<?, ?>, Set<String>> HIDDEN = new WeakHashMap<>();
+    /** Tick em que cada stand começou a chutar (para tocar a animação do começo). */
+    private static final Map<StandEntity<?, ?>, Integer> KICK_START = new WeakHashMap<>();
 
     private BonePoser() {
     }
@@ -27,6 +29,11 @@ public final class BonePoser {
     public static void apply(AzBakedModel model, StandEntity<?, ?> stand) {
         boolean off = StandFlags.isStandOff(stand);
         boolean kick = StandFlags.isKicking(stand);
+        if (kick) {
+            KICK_START.putIfAbsent(stand, stand.tickCount);
+        } else {
+            KICK_START.remove(stand);
+        }
         Set<String> previous = HIDDEN.get(stand);
         if (!off && !kick && previous == null) {
             return; // caminho comum: nada a fazer
@@ -79,7 +86,15 @@ public final class BonePoser {
     }
 
     private static void poseKick(AzBakedModel model, StandEntity<?, ?> stand) {
-        // Braços relaxados (pose padrão do modelo).
+        int start = KICK_START.getOrDefault(stand, stand.tickCount);
+        float seconds = (stand.tickCount - start + Minecraft.getInstance().getFrameTime()) / 20.0f;
+
+        // Animação oficial: a kick barrage aérea do Gold Experience Requiem.
+        if (GerKickAnimation.apply(model, seconds)) {
+            return;
+        }
+
+        // Plano B (se o arquivo de animação do JCraft não puder ser lido): balançar as pernas por código.
         for (String name : new String[]{"armLeft", "armRight", "lower_armLeft", "lower_armRight",
                 "leftArm", "rightArm"}) {
             AzBone arm = model.getBoneOrNull(name);
@@ -89,9 +104,7 @@ public final class BonePoser {
                 arm.setRotZ(0f);
             }
         }
-
-        float t = stand.tickCount + Minecraft.getInstance().getFrameTime();
-        float swing = Mth.sin(t * 1.7f);
+        float swing = Mth.sin((stand.tickCount + Minecraft.getInstance().getFrameTime()) * 1.7f);
         kickLeg(model, "legRight", "lower_legRight", swing);
         kickLeg(model, "legLeft", "lower_legLeft", -swing);
         kickLeg(model, "rightLeg", "lowerRight", swing);

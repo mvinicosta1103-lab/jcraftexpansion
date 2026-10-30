@@ -6,6 +6,7 @@ import dev.architectury.event.events.common.TickEvent;
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
 import net.arna.jcraft.api.attack.enums.MoveInputType;
+import net.arna.jcraft.api.attack.moves.AbstractBarrageAttack;
 import net.arna.jcraft.api.stand.StandEntity;
 import net.arna.jcraft.common.network.c2s.PlayerInputPacket;
 import net.arna.jcraft.common.util.JUtils;
@@ -139,6 +140,12 @@ public final class StandFlags {
     private static void releaseKick(ServerPlayer player) {
         if (KICKING.remove(player.getUUID())) {
             PlayerInputPacket.getInputStateManager(player).heldInputs.put(MoveInputType.BARRAGE, 0);
+
+            // Ao soltar a tecla, encerra a barragem na hora (senão ela terminaria sozinha, como uma barragem normal).
+            StandEntity<?, ?> stand = JUtils.getStand(player);
+            if (stand != null && stand.getCurrentMove() instanceof AbstractBarrageAttack<?, ?>) {
+                stand.cancelMove();
+            }
         }
     }
 
