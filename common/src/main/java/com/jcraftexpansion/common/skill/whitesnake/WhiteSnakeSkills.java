@@ -1,5 +1,7 @@
 package com.jcraftexpansion.common.skill.whitesnake;
 
+import com.jcraftexpansion.common.disguise.DisguiseManager;
+import com.jcraftexpansion.common.skill.InputSkill;
 import com.jcraftexpansion.common.skill.SimpleSkill;
 import com.jcraftexpansion.common.skill.SkillContext;
 import com.jcraftexpansion.common.skill.SkillTicker;
@@ -27,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 /**
- * As 8 skills extras do White Snake (hotbar de skills, teclas 1-9).
+ * As 9 skills extras do White Snake (hotbar de skills, teclas 1-9).
  * <p>
  * As skills reaproveitam as animações que o White Snake já tem (disco, spew etc.).
  */
@@ -43,10 +45,19 @@ public final class WhiteSnakeSkills {
             new SimpleSkill("sleep_disc", Items.MUSIC_DISC_11, 600, WhiteSnakeSkills::sleepDisc),            // 5
             new SimpleSkill("toxic_mist", Items.FERMENTED_SPIDER_EYE, 700, WhiteSnakeSkills::toxicMist),     // 6
             new SimpleSkill("acid_trap", Items.SLIME_BALL, 800, WhiteSnakeSkills::acidTrap),                 // 7
-            new SimpleSkill("disc_ward", Items.AMETHYST_SHARD, 900, WhiteSnakeSkills::discWard)              // 8
+            new SimpleSkill("disc_ward", Items.AMETHYST_SHARD, 900, WhiteSnakeSkills::discWard),             // 8
+            new InputSkill("disguise", Items.PLAYER_HEAD, 100, WhiteSnakeSkills::disguise)                 // 9
     );
 
     private WhiteSnakeSkills() {
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // 9 - Disfarce: o jogador digita o nome de um jogador (skin) ou de um mob e o stand vira uma cópia dele
+    //     (aparência, tamanho e golpes), continuando a ser o White Snake. Digitar vazio ou repetir remove.
+    // ------------------------------------------------------------------------------------------
+    private static boolean disguise(SkillContext ctx, String text) {
+        return DisguiseManager.apply(ctx.player(), text);
     }
 
     // ------------------------------------------------------------------------------------------

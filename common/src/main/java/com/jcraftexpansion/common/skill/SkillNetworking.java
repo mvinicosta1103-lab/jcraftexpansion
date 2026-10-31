@@ -28,13 +28,14 @@ public final class SkillNetworking {
 
     private static void onCast(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
         int slot = buf.readByte();
+        String text = buf.readBoolean() ? buf.readUtf(64) : null;
         if (!(context.getPlayer() instanceof ServerPlayer player)) {
             return;
         }
-        context.queue(() -> handleCast(player, slot));
+        context.queue(() -> handleCast(player, slot, text));
     }
 
-    private static void handleCast(ServerPlayer player, int slot) {
+    private static void handleCast(ServerPlayer player, int slot, String text) {
         if (!(player.level() instanceof ServerLevel level) || !player.isAlive()) {
             return;
         }
@@ -56,7 +57,12 @@ public final class SkillNetworking {
         }
 
         StandSkill skill = skills.get(slot);
-        if (skill.cast(new SkillContext(player, level, stand))) {
+        if (skill.needsTextInput() && text == null) {
+            return;
+        }
+        SkillContext ctx = new SkillContext(player, level, stand);
+        boolean used = skill.needsTextInput() ? skill.cast(ctx, text) : skill.cast(ctx);
+        if (used) {
             SkillCooldowns.set(player.getUUID(), slot, now + skill.cooldownTicks());
             sendCooldown(player, slot, skill.cooldownTicks());
         }

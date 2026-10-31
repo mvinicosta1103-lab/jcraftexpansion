@@ -1,5 +1,6 @@
 package com.jcraftexpansion.client;
 
+import com.jcraftexpansion.client.disguise.DisguiseClient;
 import com.jcraftexpansion.client.skill.SkillClient;
 import com.jcraftexpansion.client.standstate.StandFlagsClient;
 
@@ -8,5 +9,6 @@ public class JCraftExpansionClient {
         // Client-side initialization logic goes here
         SkillClient.init();
         StandFlagsClient.init();
+        DisguiseClient.init();
     }
 }

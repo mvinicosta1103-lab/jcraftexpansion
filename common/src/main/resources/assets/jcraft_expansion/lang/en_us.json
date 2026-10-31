@@ -45,5 +45,10 @@
   "autopilot.jcraft_expansion.off": "Autopilot ended",
   "autopilot.jcraft_expansion.target_done": "Target defeated: the stand returned",
   "autopilot.jcraft_expansion.too_far": "Autopilot ended: stand too far away",
-  "autopilot.jcraft_expansion.busy": "The stand is in Tandem"
+  "autopilot.jcraft_expansion.busy": "The stand is in Tandem",
+  "skill.jcraft_expansion.disguise": "Disguise",
+  "skill.jcraft_expansion.disguise.hint": "Player or mob name (empty removes). E.g. Notch, zombie",
+  "disguise.jcraft_expansion.on": "Disguised as %s",
+  "disguise.jcraft_expansion.off": "Disguise removed",
+  "disguise.jcraft_expansion.invalid": "Invalid name: use a player name or a mob id"
 }

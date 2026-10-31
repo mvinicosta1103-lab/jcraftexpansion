@@ -45,5 +45,10 @@
   "autopilot.jcraft_expansion.off": "Piloto automático encerrado",
   "autopilot.jcraft_expansion.target_done": "Alvo derrotado: o stand voltou",
   "autopilot.jcraft_expansion.too_far": "Piloto automático encerrado: stand longe demais",
-  "autopilot.jcraft_expansion.busy": "O stand está em Tandem"
+  "autopilot.jcraft_expansion.busy": "O stand está em Tandem",
+  "skill.jcraft_expansion.disguise": "Disfarce",
+  "skill.jcraft_expansion.disguise.hint": "Nome de um jogador ou mob (vazio remove). Ex.: Notch, zombie",
+  "disguise.jcraft_expansion.on": "Disfarçado de %s",
+  "disguise.jcraft_expansion.off": "Disfarce removido",
+  "disguise.jcraft_expansion.invalid": "Nome inválido: use o nome de um jogador ou o id de um mob"
 }

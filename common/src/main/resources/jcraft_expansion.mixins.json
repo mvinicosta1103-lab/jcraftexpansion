@@ -10,7 +10,8 @@
   ],
   "mixins": [
     "StandEntityMixin",
-    "WhiteSnakeEntityMixin"
+    "WhiteSnakeEntityMixin",
+    "EntityDimensionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -20,6 +20,16 @@ public interface StandSkill {
      */
     boolean cast(SkillContext ctx);
 
+    /** true se a skill pede um texto ao jogador antes de ser usada (ex.: o nome de um disfarce). */
+    default boolean needsTextInput() {
+        return false;
+    }
+
+    /** Versão da skill que recebe o texto digitado pelo jogador. */
+    default boolean cast(SkillContext ctx, String text) {
+        return cast(ctx);
+    }
+
     default String translationKey() {
         return "skill.jcraft_expansion." + id();
     }

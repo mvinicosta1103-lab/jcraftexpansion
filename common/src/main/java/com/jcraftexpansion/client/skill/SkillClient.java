@@ -84,7 +84,15 @@ public final class SkillClient {
                 KeyMapping key = mc.options.keyHotbarSlots[i];
                 while (key.consumeClick()) {
                     if (i < skills.size()) {
-                        sendCast(i);
+                        StandSkill skill = skills.get(i);
+                        if (skill.needsTextInput()) {
+                            final int slot = i;
+                            mc.setScreen(new TextInputScreen(Component.translatable(skill.translationKey()),
+                                    Component.translatable(skill.translationKey() + ".hint"),
+                                    text -> sendCast(slot, text)));
+                        } else {
+                            sendCast(i);
+                        }
                     }
                 }
             }
@@ -92,8 +100,16 @@ public final class SkillClient {
     }
 
     private static void sendCast(int slot) {
+        sendCast(slot, null);
+    }
+
+    private static void sendCast(int slot, String text) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeByte(slot);
+        buf.writeBoolean(text != null);
+        if (text != null) {
+            buf.writeUtf(text, 64);
+        }
         NetworkManager.sendToServer(SkillNetworking.CAST_ID, buf);
     }
 
