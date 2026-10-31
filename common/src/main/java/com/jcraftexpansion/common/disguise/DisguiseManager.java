@@ -151,6 +151,27 @@ public final class DisguiseManager {
         return true;
     }
 
+    /**
+     * Chamado quando o White Snake lança qualquer golpe ou skill: o disfarce cai automaticamente.
+     * Só faz algo no servidor e só se o dono do stand estiver disfarçado.
+     */
+    public static void breakOnUse(StandEntity<?, ?> stand) {
+        if (DISGUISES.isEmpty() || stand == null || stand.level().isClientSide) {
+            return;
+        }
+        LivingEntity user = stand.getUser();
+        if (user instanceof ServerPlayer player) {
+            breakOnUse(player);
+        }
+    }
+
+    public static void breakOnUse(ServerPlayer player) {
+        if (DISGUISES.containsKey(player.getUUID())) {
+            clear(player);
+            player.displayClientMessage(Component.translatable("disguise.jcraft_expansion.off"), true);
+        }
+    }
+
     private static void clear(ServerPlayer player) {
         DISGUISES.remove(player.getUUID());
         StandEntity<?, ?> stand = JUtils.getStand(player);

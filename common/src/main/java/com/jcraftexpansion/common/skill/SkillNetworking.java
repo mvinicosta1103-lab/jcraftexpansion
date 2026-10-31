@@ -1,6 +1,7 @@
 package com.jcraftexpansion.common.skill;
 
 import com.jcraftexpansion.JCraftExpansion;
+import com.jcraftexpansion.common.disguise.DisguiseManager;
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
 import net.arna.jcraft.api.stand.StandEntity;
@@ -62,6 +63,10 @@ public final class SkillNetworking {
         }
         SkillContext ctx = new SkillContext(player, level, stand);
         boolean used = skill.needsTextInput() ? skill.cast(ctx, text) : skill.cast(ctx);
+        if (used && !"disguise".equals(skill.id())) {
+            // Lançar qualquer outra skill derruba o disfarce do White Snake.
+            DisguiseManager.breakOnUse(player);
+        }
         if (used) {
             SkillCooldowns.set(player.getUUID(), slot, now + skill.cooldownTicks());
             sendCooldown(player, slot, skill.cooldownTicks());

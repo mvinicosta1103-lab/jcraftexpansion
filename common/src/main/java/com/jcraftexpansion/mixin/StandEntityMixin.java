@@ -1,5 +1,6 @@
 package com.jcraftexpansion.mixin;
 
+import com.jcraftexpansion.common.disguise.DisguiseManager;
 import com.jcraftexpansion.common.standstate.StandFlags;
 import net.arna.jcraft.api.attack.enums.MoveClass;
 import net.arna.jcraft.api.attack.enums.MoveInputType;
@@ -30,6 +31,14 @@ public abstract class StandEntityMixin {
         if (StandFlags.isStandOff(self)
                 && moveClass != MoveClass.LIGHT && moveClass != MoveClass.HEAVY && moveClass != MoveClass.BARRAGE) {
             cir.setReturnValue(false);
+        }
+    }
+
+    /** Disfarce do White Snake: qualquer golpe lançado (leve, pesado, barragem etc.) remove o disfarce. */
+    @Inject(method = "handleMove(Lnet/arna/jcraft/api/attack/enums/MoveClass;)Z", at = @At("RETURN"), remap = false)
+    private void jcraftexpansion$disguiseBreaksOnMove(MoveClass moveClass, CallbackInfoReturnable<Boolean> cir) {
+        if (cir.getReturnValueZ()) {
+            DisguiseManager.breakOnUse((StandEntity<?, ?>) (Object) this);
         }
     }
 
