@@ -1,10 +1,13 @@
 package com.jcraftexpansion;
 
 import com.jcraftexpansion.common.barrage.BarrageHoldHandler;
+import com.jcraftexpansion.common.disguise.DisguiseManager;
 import com.jcraftexpansion.common.register.EntityTypeRegistry;
 import com.jcraftexpansion.common.register.StandTypeRegistry;
 import com.jcraftexpansion.common.skill.SkillNetworking;
 import com.jcraftexpansion.common.skill.SkillTicker;
+import com.jcraftexpansion.common.skill.kingcrimson.KingCrimsonPilot;
+import com.jcraftexpansion.common.skill.kingcrimson.KingCrimsonTicker;
 import com.jcraftexpansion.common.skill.whitesnake.AcidTrapTicker;
 import com.jcraftexpansion.common.standstate.AutopilotManager;
 import com.jcraftexpansion.common.standstate.StandFlags;
@@ -30,6 +33,10 @@ public final class JCraftExpansion {
         StandFlags.init();
         TandemManager.init();
         AutopilotManager.init();
+        DisguiseManager.init();
+
+        KingCrimsonPilot.init();
+        KingCrimsonTicker.init();
     }
 
     public static ResourceLocation id(String path) {

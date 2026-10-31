@@ -50,5 +50,21 @@
   "skill.jcraft_expansion.disguise.hint": "Nome de um jogador ou mob (vazio remove). Ex.: Notch, zombie",
   "disguise.jcraft_expansion.on": "Disfarçado de %s",
   "disguise.jcraft_expansion.off": "Disfarce removido",
-  "disguise.jcraft_expansion.invalid": "Nome inválido: use o nome de um jogador ou o id de um mob"
+  "disguise.jcraft_expansion.invalid": "Nome inválido: use o nome de um jogador ou o id de um mob",
+  "skill.jcraft_expansion.pilot_mode": "Modo Piloto",
+  "skill.jcraft_expansion.crimson_dash": "Investida Carmesim",
+  "skill.jcraft_expansion.erased_cut": "Corte Apagado",
+  "skill.jcraft_expansion.time_freeze": "Apagar Tempo",
+  "skill.jcraft_expansion.phantom_flurry": "Rajada Fantasma",
+  "skill.jcraft_expansion.crimson_pulse": "Pulso Carmesim",
+  "skill.jcraft_expansion.time_rewind": "Retrocesso",
+  "skill.jcraft_expansion.phantom_dodge": "Esquiva Fantasma",
+  "skill.jcraft_expansion.crimson_thrust": "Estocada Carmesim",
+  "skill.jcraft_expansion.msg.pilot_on": "Modo piloto ligado (alcance médio)",
+  "skill.jcraft_expansion.msg.pilot_off": "Modo piloto desligado",
+  "skill.jcraft_expansion.msg.pilot_busy": "O stand está em Tandem",
+  "skill.jcraft_expansion.msg.rewind_marked": "Ponto marcado: em 5 s o tempo volta",
+  "skill.jcraft_expansion.msg.rewind_done": "O tempo voltou",
+  "skill.jcraft_expansion.msg.dodge_ready": "Esquiva pronta: o próximo dano será apagado",
+  "skill.jcraft_expansion.msg.dodge_used": "Dano apagado do tempo!"
 }

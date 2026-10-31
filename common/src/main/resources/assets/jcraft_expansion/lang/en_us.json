@@ -50,5 +50,21 @@
   "skill.jcraft_expansion.disguise.hint": "Player or mob name (empty removes). E.g. Notch, zombie",
   "disguise.jcraft_expansion.on": "Disguised as %s",
   "disguise.jcraft_expansion.off": "Disguise removed",
-  "disguise.jcraft_expansion.invalid": "Invalid name: use a player name or a mob id"
+  "disguise.jcraft_expansion.invalid": "Invalid name: use a player name or a mob id",
+  "skill.jcraft_expansion.pilot_mode": "Pilot Mode",
+  "skill.jcraft_expansion.crimson_dash": "Crimson Dash",
+  "skill.jcraft_expansion.erased_cut": "Erased Cut",
+  "skill.jcraft_expansion.time_freeze": "Time Freeze",
+  "skill.jcraft_expansion.phantom_flurry": "Phantom Flurry",
+  "skill.jcraft_expansion.crimson_pulse": "Crimson Pulse",
+  "skill.jcraft_expansion.time_rewind": "Time Rewind",
+  "skill.jcraft_expansion.phantom_dodge": "Phantom Dodge",
+  "skill.jcraft_expansion.crimson_thrust": "Crimson Thrust",
+  "skill.jcraft_expansion.msg.pilot_on": "Pilot mode on (medium range)",
+  "skill.jcraft_expansion.msg.pilot_off": "Pilot mode off",
+  "skill.jcraft_expansion.msg.pilot_busy": "The stand is in Tandem",
+  "skill.jcraft_expansion.msg.rewind_marked": "Point marked: time rewinds in 5 s",
+  "skill.jcraft_expansion.msg.rewind_done": "Time rewound",
+  "skill.jcraft_expansion.msg.dodge_ready": "Dodge ready: the next damage will be erased",
+  "skill.jcraft_expansion.msg.dodge_used": "Damage erased from time!"
 }
