@@ -1,9 +1,11 @@
 package com.jcraftexpansion.common.skill;
 
+import com.jcraftexpansion.common.skill.cmoon.CMoonSkills;
 import com.jcraftexpansion.common.skill.gold.GoldExperienceSkills;
 import com.jcraftexpansion.common.skill.kingcrimson.KingCrimsonSkills;
 import com.jcraftexpansion.common.skill.whitesnake.WhiteSnakeSkills;
 import net.arna.jcraft.api.stand.StandEntity;
+import net.arna.jcraft.common.entity.stand.CMoonEntity;
 import net.arna.jcraft.common.entity.stand.GoldExperienceEntity;
 import net.arna.jcraft.common.entity.stand.KingCrimsonEntity;
 import net.arna.jcraft.common.entity.stand.WhiteSnakeEntity;
@@ -26,6 +28,9 @@ public final class SkillRegistry {
         }
         if (stand instanceof WhiteSnakeEntity) {
             return WhiteSnakeSkills.SKILLS;
+        }
+        if (stand instanceof CMoonEntity) {
+            return CMoonSkills.SKILLS;
         }
         return List.of();
     }

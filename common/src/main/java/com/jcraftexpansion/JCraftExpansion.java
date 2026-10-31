@@ -6,6 +6,8 @@ import com.jcraftexpansion.common.register.EntityTypeRegistry;
 import com.jcraftexpansion.common.register.StandTypeRegistry;
 import com.jcraftexpansion.common.skill.SkillNetworking;
 import com.jcraftexpansion.common.skill.SkillTicker;
+import com.jcraftexpansion.common.skill.cmoon.CMoonPilot;
+import com.jcraftexpansion.common.skill.cmoon.CMoonTicker;
 import com.jcraftexpansion.common.skill.kingcrimson.KingCrimsonPilot;
 import com.jcraftexpansion.common.skill.kingcrimson.KingCrimsonTicker;
 import com.jcraftexpansion.common.skill.whitesnake.AcidTrapTicker;
@@ -37,6 +39,9 @@ public final class JCraftExpansion {
 
         KingCrimsonPilot.init();
         KingCrimsonTicker.init();
+
+        CMoonPilot.init();
+        CMoonTicker.init();
     }
 
     public static ResourceLocation id(String path) {

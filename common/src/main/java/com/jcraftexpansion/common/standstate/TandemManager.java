@@ -32,8 +32,8 @@ import java.util.UUID;
 /**
  * Tandem: o stand se solta do usuário e ataca sozinho a entidade para a qual o usuário estava olhando.
  * <p>
- * Usa o modo "remoto" do JCraft (stand solto do dono). A IA daqui move o stand até o alvo, vira o stand
- * para ele e dispara golpes leves, pesados e barragens. Apertar a tecla de novo (ou perder o alvo) encerra.
+ * Usa o modo "remoto" do JCraft (stand solto do dono). A IA daqui move o stand até o alvo, gira o stand
+ * (de forma independente da direção do dono) até olhar para ele e só então dispara golpes leves, pesados e barragens. Apertar a tecla de novo (ou perder o alvo) encerra.
  */
 public final class TandemManager {
     /** Cliente -> Servidor: alternar o Tandem. */
@@ -43,6 +43,12 @@ public final class TandemManager {
     private static final double MAX_DISTANCE = 64.0;
     private static final double STAND_DISTANCE = 1.7;
     private static final double ATTACK_RANGE = 4.0;
+    /** Velocidade máxima de giro do stand (graus por tick): ele gira por conta própria, independente do dono. */
+    private static final float TURN_SPEED_YAW = 24.0f;
+    private static final float TURN_SPEED_PITCH = 16.0f;
+    /** O stand só ataca se estiver olhando para o alvo, com no máximo esta diferença (graus). */
+    private static final float ATTACK_YAW_TOLERANCE = 30.0f;
+    private static final float ATTACK_PITCH_TOLERANCE = 45.0f;
 
     private static final Map<UUID, Session> SESSIONS = new HashMap<>();
 
@@ -180,12 +186,15 @@ public final class TandemManager {
             next = current.add(delta.scale(step / length));
         }
 
-        // 2) Rotação: olhando para o alvo.
+        // 2) Rotação: o stand gira sozinho em direção ao alvo (não copia a direção do dono).
         double dx = target.getX() - next.x;
         double dz = target.getZ() - next.z;
         double dy = target.getY(0.5) - (next.y + stand.getBbHeight() * 0.5);
-        float yaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
-        float pitch = (float) -(Mth.atan2(dy, Math.sqrt(dx * dx + dz * dz)) * (180.0 / Math.PI));
+        float wantedYaw = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+        float wantedPitch = (float) -(Mth.atan2(dy, Math.sqrt(dx * dx + dz * dz)) * (180.0 / Math.PI));
+
+        float yaw = Mth.approachDegrees(stand.getYRot(), wantedYaw, TURN_SPEED_YAW);
+        float pitch = Mth.approachDegrees(stand.getXRot(), wantedPitch, TURN_SPEED_PITCH);
 
         stand.setPos(next.x, next.y, next.z);
         stand.setYRot(yaw);
@@ -195,8 +204,21 @@ public final class TandemManager {
         stand.setDeltaMovement(Vec3.ZERO);
         stand.fallDistance = 0.0f;
 
+        // Só ataca enquanto estiver olhando para o alvo.
+        boolean facingTarget = Math.abs(Mth.degreesDifference(yaw, wantedYaw)) <= ATTACK_YAW_TOLERANCE
+                && Math.abs(Mth.degreesDifference(pitch, wantedPitch)) <= ATTACK_PITCH_TOLERANCE;
+
         // 3) Ataques.
         if (!stand.canAttack() || stand.position().distanceTo(target.position()) > ATTACK_RANGE) {
+            return;
+        }
+
+        if (!facingTarget) {
+            // Virou para longe do alvo: interrompe a barragem e espera olhar de novo antes de golpear.
+            if (stand.getCurrentMove() instanceof AbstractBarrageAttack<?, ?>) {
+                stand.cancelMove();
+                session.nextAttack = now + 4;
+            }
             return;
         }
 

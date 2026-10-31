@@ -66,5 +66,13 @@
   "skill.jcraft_expansion.msg.rewind_marked": "Point marked: time rewinds in 5 s",
   "skill.jcraft_expansion.msg.rewind_done": "Time rewound",
   "skill.jcraft_expansion.msg.dodge_ready": "Dodge ready: the next damage will be erased",
-  "skill.jcraft_expansion.msg.dodge_used": "Damage erased from time!"
+  "skill.jcraft_expansion.msg.dodge_used": "Damage erased from time!",
+  "skill.jcraft_expansion.gravity_well": "Gravity Well",
+  "skill.jcraft_expansion.anti_gravity": "Anti-Gravity",
+  "skill.jcraft_expansion.inversion_wave": "Inversion Wave",
+  "skill.jcraft_expansion.lunar_leap": "Lunar Leap",
+  "skill.jcraft_expansion.gravity_ward": "Gravity Ward",
+  "skill.jcraft_expansion.gravity_crush": "Gravity Crush",
+  "skill.jcraft_expansion.heaven_drop": "Heaven Drop",
+  "skill.jcraft_expansion.msg.cmoon_pilot_on": "Pilot mode on (long range)"
 }

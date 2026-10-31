@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -36,7 +37,8 @@ import java.util.UUID;
  * <p>
  * Tem dois modos de base (só um por vez) e uma ordem de ataque que pode ser dada por cima deles:
  * <ul>
- *     <li>{@link Mode#GUARD}: o stand acompanha o dono e ataca quem o atacar (jogadores, mobs, projéteis de mobs...).</li>
+ *     <li>{@link Mode#GUARD}: o stand anda em volta do dono (pelo chão, sem flutuar e sem precisar olhar para onde o dono
+ *     olha) e ataca quem o atacar (jogadores, mobs, projéteis de mobs...).</li>
  *     <li>{@link Mode#HOLD}: o stand vai até um ponto e fica parado lá, atacando inimigos que chegarem perto.</li>
  *     <li>Ordem de ataque: o stand vai atrás de uma criatura específica até derrotá-la e depois volta ao modo de base
  *     (ou encerra, se não havia modo de base).</li>
@@ -59,6 +61,18 @@ public final class AutopilotManager {
     private static final double HOLD_RADIUS = 5.0;
     private static final double STAND_DISTANCE = 1.7;
     private static final double ATTACK_RANGE = 4.0;
+    /** Modo Guarda sem ameaça: o stand anda em círculo em volta do dono, com os pés no chão. */
+    private static final double ORBIT_RADIUS = 2.6;
+    /** Quanto o ponto do círculo avança por tick (radianos): ~1 volta a cada 6 s. */
+    private static final double ORBIT_SPEED = 0.05;
+    private static final double WALK_SPEED = 0.25;
+    private static final double RUN_SPEED = 0.6;
+    /** Acima desta distância ao ponto do círculo o stand corre em vez de andar. */
+    private static final double RUN_DISTANCE = 3.5;
+    /** Longe demais (ou em outro nível) o stand reaparece junto do dono. */
+    private static final double TELEPORT_DISTANCE = 20.0;
+    private static final double TELEPORT_HEIGHT = 6.0;
+    private static final float WALK_TURN_SPEED = 25.0f;
 
     private static final Map<UUID, Session> SESSIONS = new HashMap<>();
 
@@ -69,6 +83,10 @@ public final class AutopilotManager {
         UUID threat;
         long nextAttack;
         long barrageEnd;
+        /** Ângulo atual do stand no círculo em volta do dono (NaN = ainda não começou). */
+        double orbitAngle = Double.NaN;
+        /** Velocidade vertical do stand quando ele anda pelo chão (gravidade própria). */
+        double fallSpeed;
     }
 
     private AutopilotManager() {
@@ -250,6 +268,16 @@ public final class AutopilotManager {
             target = currentThreat(owner, stand, s, level, now);
         }
 
+        // Guarda sem ameaça: o stand anda em volta do dono em vez de flutuar atrás dele.
+        if (target == null && s.base == Mode.GUARD) {
+            if (stand.getCurrentMove() instanceof AbstractBarrageAttack<?, ?>) {
+                stand.cancelMove();
+            }
+            walkAround(owner, stand, s);
+            return null;
+        }
+        s.fallSpeed = 0.0; // voando atrás de um alvo / parado num ponto: sem gravidade própria
+
         // 2) Posição e rotação desejadas.
         Vec3 desired;
         float yaw;
@@ -265,7 +293,7 @@ public final class AutopilotManager {
         } else if (s.base == Mode.HOLD && s.holdPoint != null) {
             desired = s.holdPoint;
         } else {
-            // Guarda sem ameaça: fica atrás e à direita do dono.
+            // (Não deve ocorrer: a Guarda sem ameaça é tratada em walkAround.) Fica atrás e à direita do dono.
             Vec3 offset = new Vec3(-0.9, 0.2, -1.2).yRot(-owner.getYRot() * Mth.DEG_TO_RAD);
             desired = owner.position().add(offset);
         }
@@ -333,6 +361,64 @@ public final class AutopilotManager {
             }
         }
         return null;
+    }
+
+    // ------------------------------------------------------------------ andar em volta do dono
+
+    /**
+     * Move o stand pelo chão em direção a um ponto que gira em volta do dono. O stand vira para onde está andando
+     * (não copia a direção do dono), tem gravidade própria, sobe degraus/pula obstáculos e, se ficar longe demais,
+     * reaparece perto do dono.
+     */
+    private static void walkAround(ServerPlayer owner, StandEntity<?, ?> stand, Session s) {
+        Vec3 ownerPos = owner.position();
+        Vec3 pos = stand.position();
+
+        if (Double.isNaN(s.orbitAngle)) {
+            s.orbitAngle = Math.atan2(pos.z - ownerPos.z, pos.x - ownerPos.x);
+        }
+        s.orbitAngle += ORBIT_SPEED;
+
+        double slotX = ownerPos.x + Math.cos(s.orbitAngle) * ORBIT_RADIUS;
+        double slotZ = ownerPos.z + Math.sin(s.orbitAngle) * ORBIT_RADIUS;
+        double dx = slotX - pos.x;
+        double dz = slotZ - pos.z;
+        double dist = Math.sqrt(dx * dx + dz * dz);
+
+        if (dist > TELEPORT_DISTANCE || Math.abs(ownerPos.y - pos.y) > TELEPORT_HEIGHT) {
+            stand.setPos(ownerPos.x, ownerPos.y, ownerPos.z);
+            s.fallSpeed = 0.0;
+            stand.setDeltaMovement(Vec3.ZERO);
+            stand.fallDistance = 0.0f;
+            return;
+        }
+
+        // Horizontal: anda até o ponto do círculo (corre se estiver ficando para trás).
+        double speed = Math.min(dist, dist > RUN_DISTANCE ? RUN_SPEED : WALK_SPEED);
+        double mx = dist > 1.0E-3 ? dx / dist * speed : 0.0;
+        double mz = dist > 1.0E-3 ? dz / dist * speed : 0.0;
+
+        // Vertical: gravidade própria; pula se bateu num obstáculo andando pelo chão.
+        if (stand.onGround()) {
+            s.fallSpeed = stand.horizontalCollision ? 0.42 : -0.08;
+        } else {
+            s.fallSpeed = Math.max((s.fallSpeed - 0.08) * 0.98, -3.0);
+        }
+
+        stand.move(MoverType.SELF, new Vec3(mx, s.fallSpeed, mz));
+        stand.fallDistance = 0.0f;
+        stand.setDeltaMovement(Vec3.ZERO);
+
+        // Rotação: olha para onde está andando; parado, mantém a direção.
+        float yaw = stand.getYRot();
+        if (speed > 0.02) {
+            float wanted = (float) (Mth.atan2(dz, dx) * (180.0 / Math.PI)) - 90.0f;
+            yaw = Mth.approachDegrees(yaw, wanted, WALK_TURN_SPEED);
+        }
+        stand.setYRot(yaw);
+        stand.setXRot(0.0f);
+        stand.setYHeadRot(yaw);
+        stand.setYBodyRot(yaw);
     }
 
     // ------------------------------------------------------------------ ameaças

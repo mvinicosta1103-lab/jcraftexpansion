@@ -66,5 +66,13 @@
   "skill.jcraft_expansion.msg.rewind_marked": "Ponto marcado: em 5 s o tempo volta",
   "skill.jcraft_expansion.msg.rewind_done": "O tempo voltou",
   "skill.jcraft_expansion.msg.dodge_ready": "Esquiva pronta: o próximo dano será apagado",
-  "skill.jcraft_expansion.msg.dodge_used": "Dano apagado do tempo!"
+  "skill.jcraft_expansion.msg.dodge_used": "Dano apagado do tempo!",
+  "skill.jcraft_expansion.gravity_well": "Poço Gravitacional",
+  "skill.jcraft_expansion.anti_gravity": "Antigravidade",
+  "skill.jcraft_expansion.inversion_wave": "Onda de Inversão",
+  "skill.jcraft_expansion.lunar_leap": "Salto Lunar",
+  "skill.jcraft_expansion.gravity_ward": "Escudo Gravitacional",
+  "skill.jcraft_expansion.gravity_crush": "Esmagamento Gravitacional",
+  "skill.jcraft_expansion.heaven_drop": "Queda Celestial",
+  "skill.jcraft_expansion.msg.cmoon_pilot_on": "Modo piloto ligado (longo alcance)"
 }
